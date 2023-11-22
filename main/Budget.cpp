@@ -5,16 +5,17 @@ long BudgetService::query(date::year_month_day from, date::year_month_day to) {
         return 0;
     }
     auto firstBudget = budgetRepo.findAll()[0];
-    if (firstBudget.getStart() > to) {
+    return getOverlappingDayCount(from, to, firstBudget);
+}
+
+long
+BudgetService::getOverlappingDayCount(const year_month_day &from, const year_month_day &to, Budget &firstBudget) const {
+    if (firstBudget.getStart() > to || firstBudget.getEnd() < from) {
         return 0;
     }
-    if (firstBudget.getEnd() < to) {
-        return (firstBudget.getEnd().day() - from.day()).count() + 1;
-    }
-    if (firstBudget.getStart() > from) {
-        return (to.day() - firstBudget.getStart().day()).count() + 1;
-    }
-    return (to.day() - from.day()).count() + 1;
+    auto overlappingStart = std::max(firstBudget.getStart(), from);
+    auto overlappingEnd = std::min(firstBudget.getEnd(), to);
+    return (overlappingEnd.day() - overlappingStart.day()).count() + 1;
 }
 
 BudgetService::BudgetService(BudgetRepo &budgetRepo) : budgetRepo(budgetRepo) {
