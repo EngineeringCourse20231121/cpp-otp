@@ -5,6 +5,9 @@ long BudgetService::query(date::year_month_day from, date::year_month_day to) {
         return 0;
     }
     auto firstBudget = budgetRepo.findAll()[0];
+    if (firstBudget.getStart() > to) {
+        return 0;
+    }
     if (firstBudget.getEnd() < to) {
         return (firstBudget.getEnd().day() - from.day()).count() + 1;
     }
