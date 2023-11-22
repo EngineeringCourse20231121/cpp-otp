@@ -2,8 +2,8 @@
 
 long BudgetService::query(date::year_month_day from, date::year_month_day to) {
     auto total = 0;
-    for (auto &item: budgetRepo.findAll()) {
-        total += getOverlappingDayCount(from, to, item);
+    for (auto &budget: budgetRepo.findAll()) {
+        total += budget.getDailyAmount() * getOverlappingDayCount(from, to, budget);
     }
     return total;
 }
@@ -28,4 +28,8 @@ year_month_day Budget::getStart() {
 
 year_month_day Budget::getEnd() {
     return this->yearMonth / last;
+}
+
+long Budget::getDailyAmount() {
+    return this->amount / ((this->getEnd().day() - this->getStart().day()).count() + 1);
 }

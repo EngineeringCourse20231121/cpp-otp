@@ -12,6 +12,8 @@ struct Budget {
     year_month_day getStart();
 
     year_month_day getEnd();
+
+    long getDailyAmount();
 };
 
 class BudgetRepo {

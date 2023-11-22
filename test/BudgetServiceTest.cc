@@ -81,4 +81,12 @@ namespace {
         ASSERT_EQ(27 + 25, total);
     }
 
+    TEST_F(BudgetServiceTest, DailyAmount) {
+        givenBudget(std::vector<Budget>{Budget{2023_y / 11, 620}});
+
+        auto total = budgetService.query(2023_y / 11 / 4, 2023_y / 11 / 25);
+
+        ASSERT_EQ(22 * 20, total);
+    }
+
 }
