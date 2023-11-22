@@ -1,5 +1,12 @@
 #include "Budget.h"
 
 long BudgetService::query(date::year_month_day from, date::year_month_day to) {
-    return 0;
+    if (budgetRepo.findAll().empty()) {
+        return 0;
+    }
+    return 1;
+}
+
+BudgetService::BudgetService(BudgetRepo &budgetRepo) : budgetRepo(budgetRepo) {
+
 }

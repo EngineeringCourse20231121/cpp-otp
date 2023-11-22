@@ -5,7 +5,10 @@
 
 using namespace date;
 
-struct Budget {};
+struct Budget {
+    year_month yearMonth;
+    int amount;
+};
 
 class BudgetRepo {
 public:
@@ -14,7 +17,10 @@ public:
 
 class BudgetService {
 public:
+    explicit BudgetService(BudgetRepo &budgetRepo);
     long query(date::year_month_day from, date::year_month_day to);
+private:
+    BudgetRepo &budgetRepo;
 };
 
 #endif //CPP_OTP_BUDGET_H
