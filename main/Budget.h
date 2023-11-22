@@ -26,7 +26,7 @@ public:
 private:
     BudgetRepo &budgetRepo;
 
-    long getOverlappingDayCount(const year_month_day &from, const year_month_day &to, Budget &firstBudget) const;
+    long getOverlappingDayCount(const year_month_day &from, const year_month_day &to, Budget &budget) const;
 };
 
 #endif //CPP_OTP_BUDGET_H

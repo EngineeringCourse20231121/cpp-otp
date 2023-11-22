@@ -14,8 +14,8 @@ namespace {
         StubBudgetRepo stubBudgetRepo;
         BudgetService budgetService = BudgetService(stubBudgetRepo);
 
-        void givenBudget(const Budget &budget) {
-            ON_CALL(stubBudgetRepo, findAll()).WillByDefault(testing::Return(std::vector<Budget>{budget}));
+        void givenBudget(const std::vector<Budget> &budgets) {
+            ON_CALL(stubBudgetRepo, findAll()).WillByDefault(testing::Return(budgets));
         }
     };
 
@@ -26,7 +26,7 @@ namespace {
     }
 
     TEST_F(BudgetServiceTest, OneDayBudget) {
-        givenBudget(Budget{2023_y / 11, 30});
+        givenBudget(std::vector<Budget>{Budget{2023_y / 11, 30}});
 
         auto total = budgetService.query(2023_y / 11 / 2, 2023_y / 11 / 2);
 
@@ -34,7 +34,7 @@ namespace {
     }
 
     TEST_F(BudgetServiceTest, TwoDayBudget) {
-        givenBudget(Budget{2023_y / 11, 30});
+        givenBudget(std::vector<Budget>{Budget{2023_y / 11, 30}});
 
         auto total = budgetService.query(2023_y / 11 / 4, 2023_y / 11 / 5);
 
@@ -42,7 +42,7 @@ namespace {
     }
 
     TEST_F(BudgetServiceTest, BudgetStartAndPeriodEnd) {
-        givenBudget(Budget{2023_y / 11, 30});
+        givenBudget(std::vector<Budget>{Budget{2023_y / 11, 30}});
 
         auto total = budgetService.query(2023_y / 10 / 4, 2023_y / 11 / 5);
 
@@ -50,7 +50,7 @@ namespace {
     }
 
     TEST_F(BudgetServiceTest, PeriodStartAndBudgetEnd) {
-        givenBudget(Budget{2023_y / 11, 30});
+        givenBudget(std::vector<Budget>{Budget{2023_y / 11, 30}});
 
         auto total = budgetService.query(2023_y / 11 / 4, 2023_y / 12 / 5);
 
@@ -58,7 +58,7 @@ namespace {
     }
 
     TEST_F(BudgetServiceTest, PeriodEndIsBeforeBudgetStart) {
-        givenBudget(Budget{2023_y / 11, 30});
+        givenBudget(std::vector<Budget>{Budget{2023_y / 11, 30}});
 
         auto total = budgetService.query(2023_y / 10 / 4, 2023_y / 10 / 25);
 
@@ -66,11 +66,19 @@ namespace {
     }
 
     TEST_F(BudgetServiceTest, PeriodStartIsAfterBudgetEnd) {
-        givenBudget(Budget{2023_y / 11, 30});
+        givenBudget(std::vector<Budget>{Budget{2023_y / 11, 30}});
 
         auto total = budgetService.query(2023_y / 12 / 4, 2023_y / 12 / 25);
 
         ASSERT_EQ(0, total);
+    }
+
+    TEST_F(BudgetServiceTest, TwoBudgets) {
+        givenBudget(std::vector<Budget>{Budget{2023_y / 11, 30}, Budget{2023_y / 12, 31}});
+
+        auto total = budgetService.query(2023_y / 11 / 4, 2023_y / 12 / 25);
+
+        ASSERT_EQ(27 + 25, total);
     }
 
 }
