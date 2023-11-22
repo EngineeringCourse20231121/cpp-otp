@@ -8,6 +8,8 @@ using namespace date;
 struct Budget {
     year_month yearMonth;
     int amount;
+
+    year_month_day getStart();
 };
 
 class BudgetRepo {
