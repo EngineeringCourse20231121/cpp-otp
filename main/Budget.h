@@ -10,6 +10,8 @@ struct Budget {
     int amount;
 
     year_month_day getStart();
+
+    year_month_day getEnd();
 };
 
 class BudgetRepo {
