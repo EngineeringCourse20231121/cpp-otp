@@ -33,4 +33,12 @@ namespace {
         ASSERT_EQ(1, total);
     }
 
+    TEST_F(BudgetServiceTest, TwoDayBudget) {
+        givenBudget(Budget{2023_y / 11, 30});
+
+        auto total = budgetService.query(2023_y / 11 / 4, 2023_y / 11 / 5);
+
+        ASSERT_EQ(2, total);
+    }
+
 }
