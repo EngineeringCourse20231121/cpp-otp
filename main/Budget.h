@@ -3,6 +3,8 @@
 #include <vector>
 #include "date.h"
 
+using namespace date;
+
 struct Budget {};
 
 class BudgetRepo {
